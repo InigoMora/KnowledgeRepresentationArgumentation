@@ -89,6 +89,7 @@ for argument in argument_map:
     argument_labelling[argument] = undef_
 print(argument_labelling)
 
+    #This should not be needed, as the 'Skeptical' label assignment that follows should also handle it. Just here for notes
 #If there are nodes that are not attacked by any other, assigned as In / True
 is_there_anchor = False
 for argument in argument_map:
@@ -96,9 +97,10 @@ for argument in argument_map:
         argument_labelling[argument] = in_
         is_there_anchor = True
 
-#****** If there is a node tagged as in (is_there_anchor==True), then we can start there
-#***** We have to have ways to find loops
+#****** If there is a node tagged as in (is_there_anchor==True), then we can start there #Not in use
 
+
+    #This results in a 'Skeptical' label assignment
 change = True
 while change:
     change = False
@@ -124,6 +126,11 @@ while change:
             if prev_label != in_: # If the label has changed, replace it and note the change
                 argument_labelling[argument]=in_
                 change = True
+
+
+#***** We have to have ways to find loops   <-- needs to implement, to assign valuese when there areen't any ancher points
+
+
 
 print()
 print('argument_labelling')
