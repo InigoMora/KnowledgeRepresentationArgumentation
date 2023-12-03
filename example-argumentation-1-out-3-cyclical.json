@@ -1,0 +1,12 @@
+{
+    "Arguments" : {
+        "0": "0 attacks 1",
+        "1": "1 attacks 2",
+        "2": "2 attacks 0",
+        "3": "3 attacks 0"
+    },
+    
+    "Attack Relations" : [
+        ["0","1"], ["1","2"], ["2","0"], ["3","0"]
+    ]
+}

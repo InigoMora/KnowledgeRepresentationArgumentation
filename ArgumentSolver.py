@@ -130,8 +130,117 @@ while change:
 
 #***** We have to have ways to find loops   <-- needs to implement, to assign valuese when there areen't any ancher points
 
+    # UP TP THIS POINT THE IMPLEMENTATION IS SKEPTICAL
 
 
 print()
-print('argument_labelling')
+print('skeptical argument_labelling')
 print(argument_labelling)
+
+
+
+
+
+
+
+#Code from above, now into function
+#***should define it earlier and add it first to avoid redundancy****
+
+def skeptical_argument_labelling(argument_map, argument_labelling):
+    argument_labelling=argument_labelling
+    change = True
+    while change:
+        change = False
+        for argument in argument_map:
+            parents_labels=[]
+            for parent in argument_map[argument][1]:
+                parents_labels.append(argument_labelling[parent])
+            if in_ in parents_labels:   #Label node Out
+                prev_label = argument_labelling[argument]
+                if prev_label != out_: # If the label has changed, replace it and note the change
+                    argument_labelling[argument]=out_
+                    change = True
+            # We can assume here that there was no parent In
+            elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
+                prev_label = argument_labelling[argument]
+                if prev_label != undef_: # If the label has changed, replace it and note the change
+                    argument_labelling[argument]=undef_   #***CHECK LABEL*****
+                    change = True
+            # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
+            #CHECK***** I might not need initial is_there_anchor label assignment***********
+            else:
+                prev_label = argument_labelling[argument]
+                if prev_label != in_: # If the label has changed, replace it and note the change
+                    argument_labelling[argument]=in_
+                    change = True
+
+    return argument_labelling
+
+
+
+
+
+def proposed_argument_labelling(argument_map, argument_labelling, unchageable_arguments):
+    argument_labelling=argument_labelling
+    unchageable_arguments=unchageable_arguments
+    change = True
+    while change:
+        change = False
+        for argument in argument_map:
+            parents_labels=[]
+            for parent in argument_map[argument][1]:
+                parents_labels.append(argument_labelling[parent])
+            if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
+                if in_ in parents_labels:   #Label node Out
+                    prev_label = argument_labelling[argument]
+                    if prev_label != out_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=out_
+                        change = True
+                # We can assume here that there was no parent In
+                elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
+                    prev_label = argument_labelling[argument]
+                    if prev_label != undef_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=undef_   #***CHECK LABEL*****
+                        change = True
+                # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
+                #CHECK***** I might not need initial is_there_anchor label assignment***********
+                else:
+                    prev_label = argument_labelling[argument]
+                    if prev_label != in_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=in_
+                        change = True
+
+    return argument_labelling
+
+
+
+
+
+
+#****Loop this part until we try all undefined*****
+if undef_ in list(argument_labelling.values()):
+    print("Attempting mapping to decrease undefined nodes")
+
+    #simple attempt ******
+    proposed_argument_labels = argument_labelling    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
+    proposed_in = None
+    proposed_out = None
+    for argument in argument_map:
+        if (proposed_argument_labels[argument] == undef_):   #If the node is labeled as undefined
+            for parent in argument_map[argument][1]:
+                if (proposed_argument_labels[parent] == undef_) and (parent != argument): #If the parent node is labeled as undefined, and the parent node is not the original node (no self attacking argument)
+                    proposed_in = argument
+                    proposed_out = parent
+                    proposed_argument_labels[argument] = in_
+                    proposed_argument_labels[parent] = out_
+                    break
+                break
+            break
+        break
+    print("THis STILL RUNS")
+    print(proposed_argument_labelling(argument_map, proposed_argument_labels, [proposed_in, proposed_out]))
+
+
+
+
+#*****SHOULD PRINT TRUE-FALSE-TRUE WHich is wrong***
