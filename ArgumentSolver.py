@@ -87,6 +87,8 @@ out_ = 'Out'
 argument_labelling = {}
 for argument in argument_map:
     argument_labelling[argument] = undef_
+print()
+print("Initial argument_labelling")
 print(argument_labelling)
 
     #This should not be needed, as the 'Skeptical' label assignment that follows should also handle it. Just here for notes
