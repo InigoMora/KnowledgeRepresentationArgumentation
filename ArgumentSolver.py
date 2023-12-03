@@ -145,7 +145,7 @@ print(argument_labelling)
 
 #Code from above, now into function
 #***should define it earlier and add it first to avoid redundancy****
-
+"""
 def skeptical_argument_labelling(argument_map, argument_labelling):
     argument_labelling=argument_labelling
     change = True
@@ -175,14 +175,14 @@ def skeptical_argument_labelling(argument_map, argument_labelling):
                     change = True
 
     return argument_labelling
+"""
 
 
 
 
-
-def proposed_argument_labelling(argument_map, argument_labelling, unchageable_arguments):
-    argument_labelling=argument_labelling
-    unchageable_arguments=unchageable_arguments
+def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_):
+    argument_labelling=argument_labelling_.copy()
+    unchageable_arguments=unchageable_arguments_
     change = True
     while change:
         change = False
@@ -191,6 +191,7 @@ def proposed_argument_labelling(argument_map, argument_labelling, unchageable_ar
             for parent in argument_map[argument][1]:
                 parents_labels.append(argument_labelling[parent])
             if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
+                #print('is this looping??????')
                 if in_ in parents_labels:   #Label node Out
                     prev_label = argument_labelling[argument]
                     if prev_label != out_: # If the label has changed, replace it and note the change
@@ -217,30 +218,57 @@ def proposed_argument_labelling(argument_map, argument_labelling, unchageable_ar
 
 
 
-#****Loop this part until we try all undefined*****
+#This loops through the different cyclical argument chains, until all have been resolved
+#NOTE: to improve, different attempts in every chain should be recorded, to minimize uncertainty
 if undef_ in list(argument_labelling.values()):
+    print()
     print("Attempting mapping to decrease undefined nodes")
+    print()
 
     #simple attempt ******
-    proposed_argument_labels = argument_labelling    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
+    proposed_argument_labels = argument_labelling.copy()    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
     proposed_in = None
     proposed_out = None
-    for argument in argument_map:
-        if (proposed_argument_labels[argument] == undef_):   #If the node is labeled as undefined
-            for parent in argument_map[argument][1]:
-                if (proposed_argument_labels[parent] == undef_) and (parent != argument): #If the parent node is labeled as undefined, and the parent node is not the original node (no self attacking argument)
-                    proposed_in = argument
-                    proposed_out = parent
-                    proposed_argument_labels[argument] = in_
-                    proposed_argument_labels[parent] = out_
+    change = True
+    unchageable_arguments = []
+    while change==True:
+        change = False
+        for argument in argument_map:
+            #print("argument: ", argument, proposed_argument_labels[argument])  #********
+            if (proposed_argument_labels[argument] == undef_):   #If the node is labeled as undefined
+                for parent in argument_map[argument][1]:
+                    if (proposed_argument_labels[parent] == undef_) and (parent != argument): #If the parent node is labeled as undefined, and the parent node is not the original node (no self attacking argument)
+                        print("argument: ", argument, proposed_argument_labels[argument])
+                        proposed_in = argument
+                        proposed_out = parent
+                        proposed_argument_labels[argument] = in_
+                        unchageable_arguments.append(argument)
+                        print("proposed IN: ",argument)
+                        proposed_argument_labels[parent] = out_
+                        unchageable_arguments.append(parent)
+                        print("proposed OUT: ",parent)
+                        break
+                    #print("PASS 1") #This does NOT run
                     break
+                #print("PASS 2") #This runs
                 break
-            break
-        break
-    print("THis STILL RUNS")
-    print(proposed_argument_labelling(argument_map, proposed_argument_labels, [proposed_in, proposed_out]))
+            #print("PASS 3") #This runs
+            #break
+        
+        #print("THis STILL RUNS")
+        print()
+        #print('here: ', proposed_argument_labels)
+        #prev_proposed_argument_labels = proposed_argument_labels
+        #print(prev_proposed_argument_labels)
+        
+        new_proposed_argument_labels = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
 
+        if proposed_argument_labels != new_proposed_argument_labels:
+            proposed_argument_labels = new_proposed_argument_labels.copy()
+            change=True
+            print("CHANGE IS PROPOSED")
 
-
+print("Proposed argument label")
+print(proposed_argument_labels)
 
 #*****SHOULD PRINT TRUE-FALSE-TRUE WHich is wrong***
