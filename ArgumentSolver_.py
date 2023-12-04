@@ -246,16 +246,23 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
     proposed_argument_labels[claim_argument_] = in_
     for parent in argument_map[claim_argument_][1]: #Make all attackers out_ to sustain the in_
         proposed_argument_labels[parent] = out_ #This is required by definition of in_
+        unchageable_arguments.append(parent)
+    print('proposed_argument_labelsHHHHHHHHHHH', proposed_argument_labels)
+    #print("unchngsedgsdfgs", unchageable_arguments)
     new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
+    print('passing', passing)
 
     if passing == False:    #The proposed assumtion did not work********
+            print("FAILEDDDDDDDDD")
             proposed_argument_labels = prev__argument_labels.copy()    #If if failed, we default the proposed to the previous labelling, as it is no longer proposed
+            return argument_labelling, False
     # If the previous statemnt is true (new_proposed_argument_labels did not pass), the following if statement will not hold
     if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention***
         proposed_argument_labels = new_proposed_argument_labels.copy()  #We update the proposed to match the new mapping
         prev__argument_labels = new_proposed_argument_labels.copy()     #And also the prev__argument_labels, as we will use it to default to it if proposed_argument_labels fails the labelling in the future
         change=True
         print("Initial admissibl test has been passed")
+        print("ADMISS TEST: ", new_proposed_argument_labels)
 
     
 
