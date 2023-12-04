@@ -94,78 +94,6 @@ for argument in argument_map:
     if bool(argument_map[argument][1]) == False:    #Then the list of atttacking nodes is empty, the boolean will result in False
         argument_labelling[argument] = in_
 
-
-    #Labelling Mechanism
-def _proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
-    argument_labelling=argument_labelling_.copy()
-    unchageable_arguments=unchageable_arguments_
-    change = True
-    while change:
-        change = False
-        for argument in argument_map:
-            parents_labels=[]
-            for parent in argument_map[argument][1]:
-                parents_labels.append(argument_labelling[parent])
-            if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
-                if in_ in parents_labels:   #Label node Out
-                    prev_label = argument_labelling[argument]
-                    if prev_label != out_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=out_
-                        change = True
-                # We can assume here that there was no parent In
-                elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
-                    prev_label = argument_labelling[argument]
-                    if prev_label != undef_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=undef_   #***CHECK LABEL*****
-                        change = True
-                # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
-                #CHECK***** I might not need initial is_there_anchor label assignment***********
-                else:
-                    prev_label = argument_labelling[argument]
-                    if prev_label != in_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=in_
-                        change = True
-    return argument_labelling
-
-
-
-   #Labelling Mechanism
-def __proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
-    argument_labelling=argument_labelling_.copy()
-    unchageable_arguments=unchageable_arguments_
-    change = True
-    while change:
-        change = False
-        for argument in argument_map:
-            parents_labels=[]
-            for parent in argument_map[argument][1]:
-                parents_labels.append(argument_labelling[parent])
-            if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
-                if in_ in parents_labels:   #Label node Out
-                    prev_label = argument_labelling[argument]
-                    if prev_label != out_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=out_
-                        change = True
-                # We can assume here that there was no parent In
-                elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
-                    prev_label = argument_labelling[argument]
-                    if prev_label != undef_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=undef_   #***CHECK LABEL*****
-                        change = True
-                # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
-                #CHECK***** I might not need initial is_there_anchor label assignment***********
-                else:
-                    prev_label = argument_labelling[argument]
-                    if prev_label != in_: # If the label has changed, replace it and note the change
-                        argument_labelling[argument]=in_
-                        change = True
-            else:
-                print('argument found in unchangeable')
-                print(argument)    
-
-    return argument_labelling
-
-
 def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
     argument_labelling=argument_labelling_.copy()
     unchageable_arguments=unchageable_arguments_
@@ -244,6 +172,15 @@ if undef_ in list(argument_labelling.values()):
     proposed_out = None
     change = True
     unchageable_arguments = []
+
+    #Is this needed?********** SHould uit be handeled as normal****
+    """
+    #Arguments that attack themselves must always be undef_
+    for argument in argument_map:
+        if argument in argument_map[argument][0]:   #If the argument attacks itself
+            unchageable_arguments.append(argument)  #Thus should not be changed
+    """
+    
     while change==True:
         change = False
         for argument in argument_map:
