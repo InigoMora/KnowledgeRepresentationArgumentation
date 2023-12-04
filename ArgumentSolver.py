@@ -6,15 +6,12 @@ import json
 
 
 # arguments:
-# INPUT: PROGRAMM_NAME ONTOLOGY_FILE CLASS_NAME #CHANGE*********
-# i.e.: el_reasoner.py SushiOntology.rdf Maki
+# INPUT: PROGRAMM_NAME ARGUMENTATION_FRAMEEWORK
 # i.e.: main.py example-argumentation-framework.json
 if len(sys.argv) >= 2:  #CGHECK THIUS PART*******
     json_file = sys.argv[1]
-    #class_name = sys.argv[2]   #******
 else:
     json_file = "example-argumentation-framework.json"
-    #class_name = "Maki"    #******
 
 print("FILE: ", json_file)  #********
 
@@ -93,96 +90,13 @@ print(argument_labelling)
 
     #This should not be needed, as the 'Skeptical' label assignment that follows should also handle it. Just here for notes
 #If there are nodes that are not attacked by any other, assigned as In / True
-is_there_anchor = False
 for argument in argument_map:
     if bool(argument_map[argument][1]) == False:    #Then the list of atttacking nodes is empty, the boolean will result in False
         argument_labelling[argument] = in_
-        is_there_anchor = True
-
-#****** If there is a node tagged as in (is_there_anchor==True), then we can start there #Not in use
 
 
-    #This results in a 'Skeptical' label assignment
-change = True
-while change:
-    change = False
-    for argument in argument_map:
-        parents_labels=[]
-        for parent in argument_map[argument][1]:
-            parents_labels.append(argument_labelling[parent])
-        if in_ in parents_labels:   #Label node Out
-            prev_label = argument_labelling[argument]
-            if prev_label != out_: # If the label has changed, replace it and note the change
-                argument_labelling[argument]=out_
-                change = True
-        # We can assume here that there was no parent In
-        elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
-            prev_label = argument_labelling[argument]
-            if prev_label != undef_: # If the label has changed, replace it and note the change
-                argument_labelling[argument]=undef_   #***CHECK LABEL*****
-                change = True
-        # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
-        #CHECK***** I might not need initial is_there_anchor label assignment***********
-        else:
-            prev_label = argument_labelling[argument]
-            if prev_label != in_: # If the label has changed, replace it and note the change
-                argument_labelling[argument]=in_
-                change = True
-
-
-#***** We have to have ways to find loops   <-- needs to implement, to assign valuese when there areen't any ancher points
-
-    # UP TP THIS POINT THE IMPLEMENTATION IS SKEPTICAL
-
-
-print()
-print('skeptical argument_labelling')
-print(argument_labelling)
-
-
-
-
-
-
-
-#Code from above, now into function
-#***should define it earlier and add it first to avoid redundancy****
-"""
-def skeptical_argument_labelling(argument_map, argument_labelling):
-    argument_labelling=argument_labelling
-    change = True
-    while change:
-        change = False
-        for argument in argument_map:
-            parents_labels=[]
-            for parent in argument_map[argument][1]:
-                parents_labels.append(argument_labelling[parent])
-            if in_ in parents_labels:   #Label node Out
-                prev_label = argument_labelling[argument]
-                if prev_label != out_: # If the label has changed, replace it and note the change
-                    argument_labelling[argument]=out_
-                    change = True
-            # We can assume here that there was no parent In
-            elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
-                prev_label = argument_labelling[argument]
-                if prev_label != undef_: # If the label has changed, replace it and note the change
-                    argument_labelling[argument]=undef_   #***CHECK LABEL*****
-                    change = True
-            # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
-            #CHECK***** I might not need initial is_there_anchor label assignment***********
-            else:
-                prev_label = argument_labelling[argument]
-                if prev_label != in_: # If the label has changed, replace it and note the change
-                    argument_labelling[argument]=in_
-                    change = True
-
-    return argument_labelling
-"""
-
-
-
-
-def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_):
+    #Labelling Mechanism
+def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
     argument_labelling=argument_labelling_.copy()
     unchageable_arguments=unchageable_arguments_
     change = True
@@ -193,7 +107,6 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
             for parent in argument_map[argument][1]:
                 parents_labels.append(argument_labelling[parent])
             if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
-                #print('is this looping??????')
                 if in_ in parents_labels:   #Label node Out
                     prev_label = argument_labelling[argument]
                     if prev_label != out_: # If the label has changed, replace it and note the change
@@ -216,6 +129,12 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
     return argument_labelling
 
 
+
+    # WIth no unchageable_arguments_, resultts in skepticall Llabelling
+argument_labelling = proposed_argument_labelling(argument_map, argument_labelling)
+print()
+print('skeptical argument_labelling')
+print(argument_labelling)
 
 
 
@@ -259,9 +178,6 @@ if undef_ in list(argument_labelling.values()):
         
         #print("THis STILL RUNS")
         print()
-        #print('here: ', proposed_argument_labels)
-        #prev_proposed_argument_labels = proposed_argument_labels
-        #print(prev_proposed_argument_labels)
         
         new_proposed_argument_labels = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
 
