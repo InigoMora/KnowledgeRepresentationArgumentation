@@ -249,7 +249,6 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
         proposed_argument_labels[child] = out_ #This is required by definition of in_
         unchageable_arguments.append(child)
     
-    print("HEREEEEEE: ", proposed_argument_labels)
     new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
 
     if passing == False:    #The proposed assumtion did not work********
@@ -408,6 +407,11 @@ else:
 
 
 
+
+
+
+
+
 #All Mappings - Not really******
 all_arg_admiss = []
 for argument in argument_map:
@@ -424,6 +428,31 @@ for arg_labelling in all_arg_admiss:
 
 
 
+
+
+
+pref = []
+for arg_labelling in all_arg_admiss:
+    pref_group = []
+    for argument in arg_labelling:
+        if arg_labelling[argument] == in_:
+            pref_group.append(argument)
+    pref.append(pref_group)
+
+print()
+print("Prefered")
+print(pref)
+
+prefered = False
+if [claim_argument] in pref:
+    prefered = True
+
+
+
+
+
+
+
 # Results
 print()
 if claim_argument not in argument_map:
@@ -432,3 +461,4 @@ else:
     print("Argument ",claim_argument)
     print("Grounded: ", grounded)
     print("Admissible: ", admissible)
+    print("Prefered: ", prefered)
