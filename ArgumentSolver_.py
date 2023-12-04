@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 from ast import arg
+from symbol import arglist
 import sys
 import json
  
@@ -230,9 +231,6 @@ print(proposed_argument_labels)
 def admissibility(argument_map, argument_labelling, claim_argument_):
     #This loops through the different cyclical argument chains, until all have been resolved
     #NOTE: to improve, different attempts in every chain should be recorded, to minimize uncertainty
-    print()
-    print("Attempting admissible mapping")
-    print()
 
     #simple attempt ******
     proposed_argument_labels = argument_labelling.copy()    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
@@ -243,29 +241,26 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
     unchageable_arguments = []
 
     unchageable_arguments.append(claim_argument_)
-    proposed_argument_labels[claim_argument_] = in_
+    proposed_argument_labels[claim_argument_] = in_ # Attemptong in_ assumption
     for parent in argument_map[claim_argument_][1]: #Make all attackers out_ to sustain the in_
         proposed_argument_labels[parent] = out_ #This is required by definition of in_
         unchageable_arguments.append(parent)
-    print('proposed_argument_labelsHHHHHHHHHHH', proposed_argument_labels)
-    #print("unchngsedgsdfgs", unchageable_arguments)
+    for child in argument_map[claim_argument_][0]: #Make all attacked arguments out_ to sustain the in_
+        proposed_argument_labels[child] = out_ #This is required by definition of in_
+        unchageable_arguments.append(child)
+    
+    print("HEREEEEEE: ", proposed_argument_labels)
     new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
-    print('passing', passing)
 
     if passing == False:    #The proposed assumtion did not work********
-            print("FAILEDDDDDDDDD")
-            proposed_argument_labels = prev__argument_labels.copy()    #If if failed, we default the proposed to the previous labelling, as it is no longer proposed
+            print("Initial admissiblility test has been Failed")
             return argument_labelling, False
     # If the previous statemnt is true (new_proposed_argument_labels did not pass), the following if statement will not hold
     if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention***
         proposed_argument_labels = new_proposed_argument_labels.copy()  #We update the proposed to match the new mapping
         prev__argument_labels = new_proposed_argument_labels.copy()     #And also the prev__argument_labels, as we will use it to default to it if proposed_argument_labels fails the labelling in the future
         change=True
-        print("Initial admissibl test has been passed")
-        print("ADMISS TEST: ", new_proposed_argument_labels)
-
-    
-
+        print("Initial admissiblility test has been passed")
 
     while change==True:
         change = False
@@ -388,6 +383,7 @@ print('pref', pref)
 
 admissible = False
 #Admissibility
+print()
 print("Atttempting admissible lable mapping")
 print()
 if claim_argument not in argument_map:
@@ -407,6 +403,28 @@ else:
 
 
 
+
+
+
+
+
+#All Mappings - Not really******
+all_arg_admiss = []
+for argument in argument_map:
+    labeling, passing = admissibility(argument_map, argument_labelling, argument)
+    if passing == True:
+        if labeling not in all_arg_admiss:  #Avoid duplicates
+            all_arg_admiss.append(labeling)
+
+print(all_arg_admiss)
+for arg_labelling in all_arg_admiss:
+    if arg_labelling[claim_argument] == in_:
+        admissible = True
+
+
+
+
+# Results
 print()
 if claim_argument not in argument_map:
     print(claim_argument, "is not contained in the argument map")
