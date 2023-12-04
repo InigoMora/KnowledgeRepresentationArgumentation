@@ -96,7 +96,7 @@ for argument in argument_map:
 
 
     #Labelling Mechanism
-def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
+def _proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
     argument_labelling=argument_labelling_.copy()
     unchageable_arguments=unchageable_arguments_
     change = True
@@ -125,13 +125,104 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
                     if prev_label != in_: # If the label has changed, replace it and note the change
                         argument_labelling[argument]=in_
                         change = True
-
     return argument_labelling
 
 
 
+   #Labelling Mechanism
+def __proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
+    argument_labelling=argument_labelling_.copy()
+    unchageable_arguments=unchageable_arguments_
+    change = True
+    while change:
+        change = False
+        for argument in argument_map:
+            parents_labels=[]
+            for parent in argument_map[argument][1]:
+                parents_labels.append(argument_labelling[parent])
+            if argument not in unchageable_arguments:   #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
+                if in_ in parents_labels:   #Label node Out
+                    prev_label = argument_labelling[argument]
+                    if prev_label != out_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=out_
+                        change = True
+                # We can assume here that there was no parent In
+                elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
+                    prev_label = argument_labelling[argument]
+                    if prev_label != undef_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=undef_   #***CHECK LABEL*****
+                        change = True
+                # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
+                #CHECK***** I might not need initial is_there_anchor label assignment***********
+                else:
+                    prev_label = argument_labelling[argument]
+                    if prev_label != in_: # If the label has changed, replace it and note the change
+                        argument_labelling[argument]=in_
+                        change = True
+            else:
+                print('argument found in unchangeable')
+                print(argument)    
+
+    return argument_labelling
+
+
+def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_arguments_=[]):
+    argument_labelling=argument_labelling_.copy()
+    unchageable_arguments=unchageable_arguments_
+    passing=False
+    change = True
+    while change:
+        change = False
+        for argument in argument_map:
+            parents_labels=[]
+            for parent in argument_map[argument][1]:
+                parents_labels.append(argument_labelling[parent])
+        #IMPORTANT NOTE: #Diferent from normal skeptical argument labelling #Prevents the assumed arguments to be re-labelled (and possibly go into loop)
+            if in_ in parents_labels:   #Label node Out
+                prev_label = argument_labelling[argument]
+                if prev_label != out_: # If the label has changed, replace it and note the change
+                    if argument in unchageable_arguments:     # If the argument is in the list of arguments we have opted to try (unchageable_arguments_)
+                        print('argument found in unchangeable')
+                        if argument_labelling_[argument] != out_:   # If the attepmted labelling is different from that from which we would be assigning now (out)
+                            print('Proposition failed, returning to previous model')
+                            return argument_labelling_, passing  #Then it means this cannot hold, we would be in a loop, so we return the prvious dictionary
+                    argument_labelling[argument]=out_
+                    change = True
+            # We can assume here that there was no parent In
+            elif undef_ in parents_labels:  #***This might not be needed, because we label all arguments Undefined to begin with
+                prev_label = argument_labelling[argument]
+                if prev_label != undef_: # If the label has changed, replace it and note the change
+                    if argument in unchageable_arguments:     # If the argument is in the list of arguments we have opted to try (unchageable_arguments_)
+                        print('argument found in unchangeable')
+                        if argument_labelling_[argument] != undef_:   # If the attepmted labelling is different from that from which we would be assigning now (undef_)
+                            print('Proposition failed, returning to previous model')
+                            return argument_labelling_, passing  #Then it means this cannot hold, we would be in a loop, so we return the prvious dictionary
+                    argument_labelling[argument]=undef_   #***CHECK LABEL*****
+                    change = True
+            # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
+            #CHECK***** I might not need initial is_there_anchor label assignment***********
+            else:
+                if argument in unchageable_arguments:     # If the argument is in the list of arguments we have opted to try (unchageable_arguments_)
+                        print('argument found in unchangeable')
+                        if argument_labelling_[argument] != in_:   # If the attepmted labelling is different from that from which we would be assigning now (in_)
+                            print('Proposition failed, returning to previous model')
+                            return argument_labelling_, passing  #Then it means this cannot hold, we would be in a loop, so we return the prvious dictionary
+                prev_label = argument_labelling[argument]
+                if prev_label != in_: # If the label has changed, replace it and note the change
+                    argument_labelling[argument]=in_
+                    change = True
+
+        passing=True
+        return argument_labelling, passing
+
+
+
+
+
+
+
     # WIth no unchageable_arguments_, resultts in skepticall Llabelling
-argument_labelling = proposed_argument_labelling(argument_map, argument_labelling)
+argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
 print()
 print('skeptical argument_labelling')
 print(argument_labelling)
@@ -148,6 +239,7 @@ if undef_ in list(argument_labelling.values()):
 
     #simple attempt ******
     proposed_argument_labels = argument_labelling.copy()    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
+    prev__argument_labels = argument_labelling.copy()
     proposed_in = None
     proposed_out = None
     change = True
@@ -160,8 +252,8 @@ if undef_ in list(argument_labelling.values()):
                 for parent in argument_map[argument][1]:
                     if (proposed_argument_labels[parent] == undef_) and (parent != argument): #If the parent node is labeled as undefined, and the parent node is not the original node (no self attacking argument)
                         print("argument: ", argument, proposed_argument_labels[argument])
-                        proposed_in = argument
-                        proposed_out = parent
+                        proposed_in = argument  #***not in use?*****
+                        proposed_out = parent  #***not in use?*****
                         proposed_argument_labels[argument] = in_
                         unchageable_arguments.append(argument)
                         print("proposed IN: ",argument)
@@ -178,11 +270,18 @@ if undef_ in list(argument_labelling.values()):
         
         #print("THis STILL RUNS")
         print()
-        
-        new_proposed_argument_labels = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
 
-        if proposed_argument_labels != new_proposed_argument_labels:
-            proposed_argument_labels = new_proposed_argument_labels.copy()
+        print('proposed_argument_labels', proposed_argument_labels)
+        print('prev__argument_labels', prev__argument_labels)
+        
+        new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
+        print('new_proposed_argument_labels', new_proposed_argument_labels)
+        if passing == False:    #The proposed assumtion did not work********
+            proposed_argument_labels = prev__argument_labels.copy()    #If if failed, we default the proposed to the previous labelling, as it is no longer proposed
+        # If the previous statemnt is true (new_proposed_argument_labels did not pass), the following if statement will not hold
+        if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention***
+            proposed_argument_labels = new_proposed_argument_labels.copy()  #We update the proposed to match the new mapping
+            prev__argument_labels = new_proposed_argument_labels.copy()     #And also the prev__argument_labels, as we will use it to default to it if proposed_argument_labels fails the labelling in the future
             change=True
             print("CHANGE IS PROPOSED")
 

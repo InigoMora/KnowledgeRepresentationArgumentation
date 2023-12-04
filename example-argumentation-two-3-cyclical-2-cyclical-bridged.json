@@ -1,0 +1,13 @@
+{
+    "Arguments" : {
+        "0": "0 attacks b",
+        "b": "b attacks a and c",
+        "c": "c attacks d",
+        "d": "d attacks e",
+        "e": "e attacks c"
+    },
+    
+    "Attack Relations" : [
+        ["0","b"], ["b","0"], ["b","c"],["c","d"], ["d","e"], ["e","c"]
+    ]
+}
