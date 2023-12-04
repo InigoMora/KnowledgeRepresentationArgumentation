@@ -1,0 +1,35 @@
+{
+  "Arguments": {
+    "a": "Working from home is more confortable and allows for flexibility in your schedule.",
+    "b": "Working from the office promotes collaboration and has less distractions.",
+    "c": "Choosing when to do remote work and in-office work is the key to productivity.",
+    "d": "Each person has their own preference for the amount of days they go to the office.",
+    "e": "Everyone in the team should be at the office on the same day."
+  },
+  "Attack Relations": [
+    [
+      "a",
+      "b"
+    ],
+    [
+      "b",
+      "a"
+    ],
+    [
+      "b",
+      "c"
+    ],
+    [
+      "c",
+      "d"
+    ],
+    [
+      "d",
+      "e"
+    ],
+    [
+      "e",
+      "c"
+    ]
+  ]
+}

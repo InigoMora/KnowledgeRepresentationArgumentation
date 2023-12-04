@@ -1,0 +1,35 @@
+{
+  "Arguments": {
+    "a": "Investing in educational courses is the best way to gain professional skills.",
+    "b": "Practical work experience is the best way to gain experience and grow in your carreer.",
+    "c": "Networking is the best way to find opportunities for carreer growth.",
+    "d": "Specializing courses contributes to career development.",
+    "e": "Only I know what is best for my carreer development."
+  },
+  "Attack Relations": [
+    [
+      "a",
+      "b"
+    ],
+    [
+      "c",
+      "b"
+    ],
+    [
+      "c",
+      "d"
+    ],
+    [
+      "d",
+      "c"
+    ],
+    [
+      "d",
+      "e"
+    ],
+    [
+      "e",
+      "e"
+    ]
+  ]
+}

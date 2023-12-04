@@ -1,0 +1,32 @@
+{
+  "Arguments": {
+    "a": "Completing work projects is crucial for satisfaction.",
+    "b": "Taking breaks and going on vacation contribute to well-being.",
+    "c": "Balancing work and personal projects is essential for happiness.",
+    "d": "Consistent work efforts lead to professional success.",
+    "e": "Extended vacations help in reducing stress and feeling relaxed.",
+    "k": "Allocating time for personal interests out of work is the key to satisfaction."
+  },
+  "Attack Relations": [
+    [
+      "e",
+      "d"
+    ],
+    [
+      "d",
+      "b"
+    ],
+    [
+      "b",
+      "a"
+    ],
+    [
+      "c",
+      "b"
+    ],
+    [
+      "a",
+      "k"
+    ]
+  ]
+}
