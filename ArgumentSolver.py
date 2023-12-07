@@ -287,14 +287,13 @@ print()
 if claim_argument not in argument_map:
     print("argument", claim_argument, "is not contained in the argument map")
 else:
-    print("Argument ",claim_argument)
+    print("Argument",claim_argument)
     print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
     print("Credolous Prefered: ", cred_prefered)    #I could just repeat the same cred_prefered for all three
     print("Credolous Admissible: ", cred_adm)
     print("Credolous Complete: ", cred_comp)
     print()
-    print("Argument ",claim_argument, "in the calculated labellings")
-
+    print("Argument",claim_argument, "in the calculated labellings")
     print("Grounded: ", grounded)
     print("Admissible: ", admissible)
     print("Prefered: ", prefered)
