@@ -130,7 +130,7 @@ grounded = False
     # WIth no unchageable_arguments_, resultts in skepticall Labelling
 argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
 print()
-print('Skeptical argument_labelling')
+print('Grounded labelling map')
 print(argument_labelling)
 
 if claim_argument in argument_map:
@@ -235,7 +235,7 @@ print(ground)
 #Admissibility
 admissible = False
 print()
-print("Admissible labellings")
+print("Admissible labelling map")
 print(all_arg_admiss)
 
 if claim_argument in argument_map:  #Make sure hte argument searched for is in the list, else the directory will complain
