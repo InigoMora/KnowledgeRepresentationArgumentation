@@ -62,7 +62,7 @@ if claim_argument not in argument_map:
     
     print("      CREDULOUS")
     print("Argument not in argument map, thus")
-    print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+    print("Credulous Preferred: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
     print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
     print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
     print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
@@ -143,8 +143,10 @@ grounded = False
 
     # WIth no unchageable_arguments_, resultts in grouded Labelling
 argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
-
-
+    
+    #NOTE: THere is a bug in proposed. run 
+            #  argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
+    # repetedly until the full vesion of grounded can be achieved
 
 def admissibility(argument_map, argument_labelling, claim_argument_):
     #This loops through the different cyclical argument chains, until all have been resolved
@@ -220,7 +222,7 @@ if claim_argument in argument_map:
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Preferred: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
         print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
         print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
@@ -260,7 +262,7 @@ if claim_argument in argument_map:  #Make sure hte argument searched for is in t
                 print("      CREDULOUS")
                 print("Argument",claim_argument)
                 print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-                print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+                print("Credulous Preferred: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
                 print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
                 print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
                 print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
@@ -284,11 +286,11 @@ if [claim_argument] in pref:
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Preferred: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
         print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
         print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
-        print("Argument found in prefered labelling")
+        print("Argument found in Preferred labelling")
     prefered = True
 
 
@@ -302,7 +304,7 @@ else:
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Preferred: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
         print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
         print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
@@ -311,7 +313,7 @@ else:
     print("Argument",claim_argument, "in the calculated labellings")
     print("Grounded: ", grounded)
     print("Admissible: ", admissible)
-    print("Prefered: ", prefered)
+    print("Preferred: ", prefered)
 
 
 
@@ -342,7 +344,7 @@ print(all_arg_admiss)
 
 
 print()
-print("Prefered labellings")
+print("Preferred labellings")
 print(pref)
 
 
