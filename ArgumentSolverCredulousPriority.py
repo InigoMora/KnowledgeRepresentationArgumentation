@@ -52,16 +52,6 @@ for argument in data['Arguments']:
             #If the argument is being attacked by another argumen (attack[1]), note this agression
             argument_map[argument][1].append(attack[0])
 
-"""
-print()
-print('argument_map')
-print(argument_map)
-"""
-
-#cred_prefered = False
-#cred_adm = False
-#cred_comp = False
-    # Becomes a single value because of principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)
 
 cred_prefered_cred_adm_cred_comp=False
 
@@ -72,19 +62,11 @@ if claim_argument not in argument_map:
     
     print("      CREDULOUS")
     print("Argument not in argument map, thus")
-    print("Credolous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
-    print("Credolous Admissible: ", cred_prefered_cred_adm_cred_comp)
-    print("Credolous Complete: ", cred_prefered_cred_adm_cred_comp)
+    print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+    print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
+    print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
     print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
 #else-  #The rest of the code can be moved here to avoid an argument that  was not found
-
-"""
-print()
-print('These arguments have no attackers (are free arguments):')
-for argument in argument_map:
-    if bool(argument_map[argument][1]) == False:    #Then the list of atttacking nodes is empty, the boolean will result in False
-        print(argument)
-"""
 
     # LABELLING
 
@@ -113,18 +95,8 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
     unchageable_arguments=unchageable_arguments_
     passing=False
     change = True
-    #****
-    epoch = 0
     while change:
         change = False
-
-        """
-        #*****
-        epoch += 1
-        print("epoch", epoch)
-        print(argument_labelling)
-        """
-
         for argument in argument_map:
             parents_labels=[]
             for parent in argument_map[argument][1]:
@@ -145,7 +117,7 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
                     if argument in unchageable_arguments:     # If the argument is in the list of arguments we have opted to try (unchageable_arguments_)
                         if argument_labelling_[argument] != undef_:   # If the attepmted labelling is different from that from which we would be assigning now (undef_)
                             return argument_labelling_, passing  #Then it means this cannot hold, we would be in a loop, so we return the prvious dictionary
-                    argument_labelling[argument]=undef_   #***CHECK LABEL*****
+                    argument_labelling[argument]=undef_   
                     change = True
             # Here we can assume that the parent list does not contain In or Undefined, meaning only Out or not parents / attackers
             else:
@@ -161,10 +133,6 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
                     #print("change", change)
 
         passing=True
-        #*****
-        #print()
-        #print("Result")
-        #print(argument_labelling)
         return argument_labelling, passing
 
 
@@ -173,11 +141,8 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
 
 grounded = False
 
-#****
-#print("**********START**********")
-    # WIth no unchageable_arguments_, resultts in skepticall Labelling
+    # WIth no unchageable_arguments_, resultts in grouded Labelling
 argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
-#print("**********END**********")
 
 
 
@@ -249,37 +214,19 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
 
 
 
-"""
-ground = []
-for argument in argument_labelling:
-    if argument_labelling[argument] == in_:
-        ground.append(argument)
-
-
-labeling, passing = proposed_argument_labelling(argument_map, argument_labelling, ground)
-#labeling, passing = admissibility(argument_map, argument_labelling, ground)
-print(labeling)
-"""
-
 if claim_argument in argument_map:
     if argument_labelling[claim_argument] == in_:
         cred_prefered_cred_adm_cred_comp  = True
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credolous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
-        print("Credolous Admissible: ", cred_prefered_cred_adm_cred_comp)
-        print("Credolous Complete: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
         print("Argument found in grounded labelling")
         grounded = True
         
-
-
-
-
-
-
 
 
 #All Mappings - Not really******
@@ -291,20 +238,11 @@ for argument in argument_map:
             all_arg_admiss.append(labeling)
 
 
-
-
-
-
 #Grounded
 ground = []
 for argument in argument_labelling:
     if argument_labelling[argument] == in_:
         ground.append(argument)
-"""
-print()
-print("Grounded labellings")
-print(ground)
-"""
 
 #Already assigned previously
 # if claim_argument in ground:
@@ -313,11 +251,6 @@ print(ground)
 
 #Admissibility
 admissible = False
-"""
-print()
-print("Admissible labelling map")
-print(all_arg_admiss)
-"""
 
 if claim_argument in argument_map:  #Make sure hte argument searched for is in the list, else the directory will complain
     for arg_labelling in all_arg_admiss:
@@ -327,9 +260,9 @@ if claim_argument in argument_map:  #Make sure hte argument searched for is in t
                 print("      CREDULOUS")
                 print("Argument",claim_argument)
                 print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-                print("Credolous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
-                print("Credolous Admissible: ", cred_prefered_cred_adm_cred_comp)
-                print("Credolous Complete: ", cred_prefered_cred_adm_cred_comp)
+                print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+                print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
+                print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
                 print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
                 print("Argument found in admissible labelling")
             admissible = True
@@ -343,11 +276,6 @@ for arg_labelling in all_arg_admiss:
             pref_group.append(argument)
     pref.append(pref_group)
 
-"""
-print()
-print("Prefered labellings")
-print(pref)
-"""
 
 prefered = False
 if [claim_argument] in pref:
@@ -356,39 +284,12 @@ if [claim_argument] in pref:
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credolous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
-        print("Credolous Admissible: ", cred_prefered_cred_adm_cred_comp)
-        print("Credolous Complete: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
         print("Argument found in prefered labelling")
     prefered = True
-
-
-"""
-#***SHould grounded be part of preferred?? *** --> Theory, no because the gorunded is also tried at the all_arg_admiss used to create preferred
-cred_prefered = False
-if prefered == True:
-    cred_prefered = True
-#elif claim_argument in ground:
-    # -or-
-elif grounded == True:  #Equivalent to the coment above
-    cred_prefered = True
-elif admissible == True:
-    cred_prefered = True
-
-
-cred_adm = False
-cred_comp = False
-if cred_prefered == True:
-    cred_adm = True
-    cred_comp = True
-"""
-
-"""
-print()
-print('Grounded labelling map')
-print(argument_labelling)
-"""
 
 
 # Results
@@ -401,9 +302,9 @@ else:
         print("      CREDULOUS")
         print("Argument",claim_argument)
         print("With principle Cred_adm(a,F)=Cred_pref(a,F)=Cred_comp(a,F)")
-        print("Credolous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
-        print("Credolous Admissible: ", cred_prefered_cred_adm_cred_comp)
-        print("Credolous Complete: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Prefered: ", cred_prefered_cred_adm_cred_comp)    #I could just repeat the same cred_prefered for all three
+        print("Credulous Admissible: ", cred_prefered_cred_adm_cred_comp)
+        print("Credulous Complete: ", cred_prefered_cred_adm_cred_comp)
         print("Runtime", "--- %s seconds ---" % (time.time() - start_time))
         print()
         
@@ -411,71 +312,6 @@ else:
     print("Grounded: ", grounded)
     print("Admissible: ", admissible)
     print("Prefered: ", prefered)
-
-#Stable --> conflict free, and attacks all other arguments not in list
-#Complete --> if Tf(S)={a, c} --> {a, c}
-
-
-#CHANGE******** Credolous means that if in admissible, it is in preferred 
-#****ADD credolous assumption
-
-
-#********
-"""
-Complete - Union between skeptical preferred and grounded
- YESSSS
-
-Complete always include empty set (?) and admissible(?)
-"""
-
-
-
-
-#******+ Add credolous admissible *******
-#****+*check Admissible *****
-
-
-
-#******change Skeptical argument_labelling tittle
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# fix grounding
-# fix print sttaetmtstn 
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -514,4 +350,43 @@ print(pref)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+#NOTE:
+    # *********IGNORE*********
+#Stable --> conflict free, and attacks all other arguments not in list
+#Complete --> if Tf(S)={a, c} --> {a, c}
+
+
+#CHANGE******** Credulous means that if in admissible, it is in preferred 
+#****ADD Credulous assumption
+
+
+#********
+"""
+Complete - Union between skeptical preferred and grounded
+ YESSSS
+
+Complete always include empty set (?) and admissible(?)
+"""
+
+#******+ Add Credulous admissible *******
+#****+*check Admissible *****
+
+#******change Skeptical argument_labelling tittle
+
+
+
+# fix grounding
+# fix print sttaetmtstn 
 
