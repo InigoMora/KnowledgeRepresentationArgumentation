@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 from ast import arg
+from operator import truediv
 from re import T
 import sys
 import json
@@ -18,7 +19,7 @@ start_time = time.time()
 # arguments:
 # INPUT: PROGRAMM_NAME ARGUMENTATION_FRAMEEWORK
 # i.e.: main.py example-argumentation-framework.json
-    # default valeus
+    # default values
 claim_argument = 'a'
 json_file = "1_work_life_balance.json"
 if len(sys.argv) >= 2:  #CGHECK THIUS PART*******
@@ -139,14 +140,39 @@ def proposed_argument_labelling(argument_map, argument_labelling_, unchageable_a
 
 
 
-grounded = False
 
-    # WIth no unchageable_arguments_, resultts in grouded Labelling
+
+
+
+    #IMPLEMENT FULL GROUND LABELLING
+"""
+grounded_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
+
+#building first labelling
+change = True
+argument_labelling = grounded_labelling.copy()
+old_labelling = grounded_labelling.copy()
+while change:
+    print('·HEEERE')
+    argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
+
+    print(argument_labelling.values())
+    print(old_labelling.values())
+    if argument_labelling == old_labelling:
+        print('SAMEEEEEE')
+        change = False
+    old_labelling = argument_labelling.copy()
+print('argument_labelling')
+print(argument_labelling)
+"""
+
+    # With no unchageable_arguments_, resultts in grouded Labelling
 argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
-    
+
     #NOTE: THere is a bug in proposed. run 
             #  argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
-    # repetedly until the full vesion of grounded can be achieved
+    # repetedly until the full vesion of grounded can be achieved 
+    # Run code as described above, making sure to adjust the necesaries grounded_labelling use when checking for argument labels
 
 def admissibility(argument_map, argument_labelling, claim_argument_):
     #This loops through the different cyclical argument chains, until all have been resolved
@@ -214,7 +240,7 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
         return proposed_argument_labels, False
 
 
-
+grounded = False
 
 if claim_argument in argument_map:
     if argument_labelling[claim_argument] == in_:
@@ -329,6 +355,16 @@ for argument in argument_map:
     if bool(argument_map[argument][1]) == False:    #Then the list of atttacking nodes is empty, the boolean will result in False
         free_arg.append(argument)
 print(free_arg)
+
+    #IMPLEMENT FULL GROUND LABELLING -- Placeholder
+#Updating the grounded labelling to full coverage
+change = True
+old_labelling = argument_labelling.copy()
+while change:
+    argument_labelling, passing = proposed_argument_labelling(argument_map, argument_labelling)
+    if argument_labelling == old_labelling:
+        change = False
+    old_labelling = argument_labelling.copy()
 
 print()
 print('Grounded labelling map')
