@@ -1,8 +1,5 @@
 #! /usr/bin/python
 
-from ast import arg
-from operator import truediv
-from re import T
 import sys
 import json
 
@@ -22,13 +19,13 @@ start_time = time.time()
     # default values
 claim_argument = 'a'
 json_file = "1_work_life_balance.json"
-if len(sys.argv) >= 2:  #CGHECK THIUS PART*******
+if len(sys.argv) >= 2:
     json_file = sys.argv[1]
-    if len(sys.argv) >= 3:  #CGHECK THIUS PART*******
+    if len(sys.argv) >= 3: 
         claim_argument = sys.argv[2]
 
 
-print("FILE: ", json_file)  #********
+print("FILE: ", json_file) 
 print("Argument: ", claim_argument)
 print()
 
@@ -178,8 +175,8 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
     #This loops through the different cyclical argument chains, until all have been resolved
     #NOTE: to improve, different attempts in every chain should be recorded, to minimize uncertainty
 
-    #simple attempt ******
-    proposed_argument_labels = argument_labelling.copy()    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones ***needs to implement***
+    #simple attempt 
+    proposed_argument_labels = argument_labelling.copy()    #creates a copy of argument_labelling to edit, keeps the old for comparing and creating other ones 
     prev__argument_labels = argument_labelling.copy()
     change = True
     unchageable_arguments = []
@@ -195,11 +192,11 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
     
     new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
 
-    if passing == False:    #The proposed assumtion did not work********
+    if passing == False:    #The proposed assumtion did not work
             #print("Initial admissiblility test has been Failed")
             return argument_labelling, False
     # If the previous statemnt is true (new_proposed_argument_labels did not pass), the following if statement will not hold
-    if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention***
+    if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention
         proposed_argument_labels = new_proposed_argument_labels.copy()  #We update the proposed to match the new mapping
         prev__argument_labels = new_proposed_argument_labels.copy()     #And also the prev__argument_labels, as we will use it to default to it if proposed_argument_labels fails the labelling in the future
         change=True
@@ -208,7 +205,6 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
     while change==True:
         change = False
         for argument in argument_map:
-            #print("argument: ", argument, proposed_argument_labels[argument])  #********
             if (proposed_argument_labels[argument] == undef_):   #If the node is labeled as undefined
                 for parent in argument_map[argument][1]:
                     if (proposed_argument_labels[parent] == undef_) and (parent != argument): #If the parent node is labeled as undefined, and the parent node is not the original node (no self attacking argument)
@@ -226,10 +222,10 @@ def admissibility(argument_map, argument_labelling, claim_argument_):
         
         #print("THis STILL RUNS")
         new_proposed_argument_labels, passing = proposed_argument_labelling(argument_map, proposed_argument_labels, unchageable_arguments)
-        if passing == False:    #The proposed assumtion did not work********
+        if passing == False:    #The proposed assumtion did not work
             proposed_argument_labels = prev__argument_labels.copy()    #If if failed, we default the proposed to the previous labelling, as it is no longer proposed
         # If the previous statemnt is true (new_proposed_argument_labels did not pass), the following if statement will not hold
-        if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention***
+        if (passing == True) and (new_proposed_argument_labels != prev__argument_labels):   #The new_proposed_argument_labels, which passed the test, is different from prev__argument_labels, and thus an extention
             proposed_argument_labels = new_proposed_argument_labels.copy()  #We update the proposed to match the new mapping
             prev__argument_labels = new_proposed_argument_labels.copy()     #And also the prev__argument_labels, as we will use it to default to it if proposed_argument_labels fails the labelling in the future
             change=True
